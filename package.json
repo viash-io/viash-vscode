@@ -3,7 +3,7 @@
   "displayName": "Viash",
   "description": "The official Viash VS Code extension.",
   "author": "Data Intuitive",
-  "publisher": "Data Intuitive",
+  "publisher": "data-intuitive",
   "icon": "assets/logo/viash.png",
   "license": "GPL-3.0-only",
   "keywords": [
