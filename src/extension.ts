@@ -6,12 +6,11 @@ import * as path from 'path';
 
 const versionCachedDir = path.join(os.homedir(), '.viash', 'releases');
 
-function getViashSchemaFile(): string | null {
-    const version = getViashVersion();
-    console.log(`Viash version: ${version}`);
-
+function getViashSchemaFile(version: string | undefined = undefined): string | undefined {
+    if (!version) {
+      version = getViashVersion();
+    }
     const schemaPath = path.join(versionCachedDir, version, 'schema.json');
-    console.log(`Schema path: ${schemaPath}`);
 
 		if (!fs.existsSync(schemaPath)) {
 			try {
@@ -24,12 +23,12 @@ function getViashSchemaFile(): string | null {
           );
 					if (status) {
 							vscode.window.showErrorMessage(`Error getting Viash schema: ${stderr}`);
-							return null;
+							return undefined;
 					}
           console.log(`Schema file created at: ${schemaPath}`);
 			} catch (error) {
 					vscode.window.showErrorMessage(`Error getting Viash schema: ${error}`);
-					return null;
+					return undefined;
 			}
 		}
 
@@ -63,26 +62,27 @@ function isViashComponent(document: vscode.TextDocument) {
   return document.fileName.endsWith(".vsh.yaml");
 }
 
-export function activateViashSchema(
+export async function activateViashSchema(
   context: vscode.ExtensionContext
 ) {
-  const ensureViashSchema = async (doc: vscode.TextDocument) => {
-    if (isViashComponent(doc)) {
-      const schemaPath = getViashSchemaFile();
-      if (schemaPath) {
-        const config = vscode.workspace.getConfiguration("yaml");
-        const schemas = config.get<any>("schemas") || {};
-        schemas[schemaPath] = ["*.vsh.yaml"];
-        config.update(
-          "schemas",
-          schemas,
-          vscode.ConfigurationTarget.Workspace
-        );
-        vscode.window.showInformationMessage(`Viash schema set: ${schemaPath}`);
-      }
-    }
-  };
-  vscode.window.onDidChangeActiveTextEditor((editor) => { if (editor) ensureViashSchema(editor.document); });
-  vscode.workspace.onDidOpenTextDocument(ensureViashSchema);
-  vscode.workspace.onDidSaveTextDocument(ensureViashSchema);
+  const version = getViashVersion();
+  if (!version) {
+    return;
+  }
+
+  const schemaPath = getViashSchemaFile(version);
+  if (!schemaPath) {
+    return;
+  }
+
+  const config = vscode.workspace.getConfiguration("yaml");
+  const schemas = config.get<any>("schemas") || {};
+  if (schemas[schemaPath] && schemas[schemaPath].length > 0 && schemas[schemaPath][0] === "*.vsh.yaml") {
+    // nothing needs to be done
+    return;
+  }
+  
+  schemas[schemaPath] = ["*.vsh.yaml"];
+  config.update("schemas", schemas, vscode.ConfigurationTarget.Workspace);
+  vscode.window.showInformationMessage(`Viash ${version} detected. Set schema to '${schemaPath}'.`);
 }
