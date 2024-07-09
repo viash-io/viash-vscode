@@ -2,14 +2,37 @@
   "name": "viash-vscode",
   "displayName": "Viash",
   "description": "The official Viash VS Code extension.",
+  "author": "Data Intuitive",
+  "publisher": "Data Intuitive",
+  "icon": "assets/logo/viash.png",
+  "license": "GPL-3.0-only",
+  "keywords": [
+    "viash",
+    "workflows",
+    "nextflow"
+  ],
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viash-io/viash-vscode.git"
+  },
+  "homepage": "https://github.com/viash-io/viash-vscode",
+  "bugs": {
+    "url": "https://github.com/viash-io/viash-vscode/issues"
+  },
+  "categories": [
+    "Programming Languages",
+    "Data Science",
+    "Linters"
+  ],
   "engines": {
     "vscode": "^1.91.0"
   },
-  "categories": [
-    "Linters"
+  "activationEvents": [
+    "onLanguage:yaml",
+    "workspaceContains:**/*.vsh.{yaml,yml,py,R,r,sh,js,scala,cs}",
+    "workspaceContains:**/_viash.{yaml,yml}"
   ],
-  "activationEvents": [],
   "main": "./out/extension.js",
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
