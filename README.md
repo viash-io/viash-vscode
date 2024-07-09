@@ -2,6 +2,8 @@
 
 This extension provides language support for Viash components (`*.vsh.yaml`).
 
+![Viash VSCode in action](assets/images/demo.png)
+
 ## Features
 
 ### YAML schema validation
@@ -10,7 +12,7 @@ The extension will validate Viash components `*.vsh.yaml` against the Viash sche
 
 ## Installation
 
-Install the extension from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=viash.vscode).
+Install the extension from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=data-intuitive.viash).
 
 ## Requirements
 
