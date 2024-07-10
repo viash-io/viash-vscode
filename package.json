@@ -11,7 +11,7 @@
     "workflows",
     "nextflow"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/viash-io/viash-vscode.git"
@@ -26,10 +26,9 @@
     "Linters"
   ],
   "engines": {
-    "vscode": "^1.91.0"
+    "vscode": "^1.63.0"
   },
   "activationEvents": [
-    "onLanguage:yaml",
     "workspaceContains:**/*.vsh.{yaml,yml,py,R,r,sh,js,scala,cs}",
     "workspaceContains:**/_viash.{yaml,yml}"
   ],
@@ -44,7 +43,10 @@
   },
   "devDependencies": {
     "@types/node": "~20.14.10",
-    "@types/vscode": "^1.91.0",
+    "@types/vscode": "^1.63.0",
     "typescript": "^5.5.3"
-  }
+  },
+  "extensionDependencies": [
+    "redhat.vscode-yaml"
+  ]
 }
