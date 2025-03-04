@@ -1,3 +1,7 @@
+# viash-vscode v0.1.1
+
+Republish of v0.1.0 to fix the version number.
+
 # viash-vscode v0.1.0
 
 ## NEW FUNCTIONALITY
