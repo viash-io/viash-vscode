@@ -2,11 +2,11 @@
 
 ## NEW FUNCTIONALITY
 
-* Add support for validating Viash project config at `_viash.yaml` (PR #xxx).
+* Add support for validating Viash project config at `_viash.yaml` (PR #1).
 
 ## MAJOR CHANGES
 
-* Use the Viash schemas from `viash-io/viash-schemas` instead of using a local cache (PR #xxx).
+* Use the Viash schemas from `viash-io/viash-schemas` instead of using a local cache (PR #1).
 
 # viash-vscode v0.0.2
 
