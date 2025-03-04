@@ -9,9 +9,10 @@
   "keywords": [
     "viash",
     "workflows",
-    "nextflow"
+    "nextflow",
+    "testing"
   ],
-  "version": "0.1.1",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/viash-io/viash-vscode.git"
@@ -23,7 +24,8 @@
   "categories": [
     "Programming Languages",
     "Data Science",
-    "Linters"
+    "Linters",
+    "Other"
   ],
   "engines": {
     "vscode": "^1.63.0"
@@ -33,32 +35,24 @@
     "workspaceContains:**/_viash.{yaml,yml}"
   ],
   "main": "./out/extension.js",
-  "contributes": {
-    "testExplorer": [
-      {
-        "id": "viashTestAdapter",
-        "label": "Viash Test"
-      }
-    ]
-  },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "pnpm run compile && pnpm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/node": "~22.13.9",
     "@types/vscode": "^1.63.0",
-    "typescript": "^5.5.3"
+    "@vscode/vsce": "^3.2.2",
+    "typescript": "^5.8.2"
   },
   "extensionDependencies": [
     "redhat.vscode-yaml"
   ],
   "dependencies": {
-    "vscode-test-adapter-api": "^1.9.0",
-    "vscode-test-adapter-util": "^0.7.1"
+    "vscode-test-adapter-api": "^1.7.0",
+    "vscode-test-adapter-util": "^0.7.0"
   }
 }

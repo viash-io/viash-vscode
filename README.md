@@ -6,9 +6,9 @@ This extension provides language support for Viash components (`*.vsh.yaml`).
 
 ## Features
 
-### YAML schema validation
-
-The extension will validate Viash components `*.vsh.yaml` against the Viash schema file.
+* Syntax highlighting and validation for Viash components (`*.vsh.yaml`).
+* Support for validating Viash project config at `_viash.yaml`.
+* Support for unit testing Viash components.
 
 ## Installation
 
@@ -16,4 +16,4 @@ Install the extension from the [Visual Studio Code Marketplace](https://marketpl
 
 ## Requirements
 
-You need to have Viash installed on your system. You can install Viash by following the instructions on the [Viash documentation website](https://viash.io/installation).
+Install Viash using [these instructions](https://viash.io/installation).
