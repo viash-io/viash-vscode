@@ -14,25 +14,24 @@ export async function activateViashSchema(context: vscode.ExtensionContext) {
     return;
   }
 
-  const schemaPath = getViashSchemaFile(version);
-  if (!schemaPath) {
-    return;
-  }
+  const configSchemaPath = getViashSchemaFile(version, "config");
+  const packageSchemaPath = getViashSchemaFile(version, "package");
 
   const config = vscode.workspace.getConfiguration("yaml");
   const schemas = config.get<any>("schemas") || {};
-  if (
-    schemas[schemaPath] &&
-    schemas[schemaPath].length == 1 &&
-    schemas[schemaPath][0] === "*.vsh.yaml"
-  ) {
-    // nothing needs to be done
+  const origSchemas = { ...schemas };
+  
+  schemas[configSchemaPath] = ["*.vsh.yaml", "*.vsh.yml"];
+  schemas[packageSchemaPath] = ["_viash.yaml", "_viash.yml"];
+
+  // Don't update if the schemas are the same
+  if (JSON.stringify(schemas) === JSON.stringify(origSchemas)) {
     return;
   }
 
-  schemas[schemaPath] = ["*.vsh.yaml"];
+  // Update the schema setting
   config.update("schemas", schemas, vscode.ConfigurationTarget.Workspace);
   vscode.window.showInformationMessage(
-    `Viash ${version} detected. Set schema to '${schemaPath}'.`
+    `Viash ${version} detected. Set schema to '${configSchemaPath}'.`
   );
 }
