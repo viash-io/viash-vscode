@@ -33,6 +33,14 @@
     "workspaceContains:**/_viash.{yaml,yml}"
   ],
   "main": "./out/extension.js",
+  "contributes": {
+    "testExplorer": [
+      {
+        "id": "viashTestAdapter",
+        "label": "Viash Test"
+      }
+    ]
+  },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
     "compile": "tsc -p ./",
@@ -42,11 +50,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/node": "~20.14.10",
+    "@types/node": "~22.13.9",
     "@types/vscode": "^1.63.0",
     "typescript": "^5.5.3"
   },
   "extensionDependencies": [
     "redhat.vscode-yaml"
-  ]
+  ],
+  "dependencies": {
+    "vscode-test-adapter-api": "^1.9.0",
+    "vscode-test-adapter-util": "^0.7.1"
+  }
 }

@@ -1,37 +1,23 @@
 import * as vscode from "vscode";
-import { getViashVersion } from "./getViashVersion";
-import { getViashSchemaFile } from "./getViashSchemaFile";
+import { activateViashSchema } from "./activateViashSchema";
+import { testExplorerExtensionId, TestHub } from "vscode-test-adapter-api";
+import { TestAdapterRegistrar } from "vscode-test-adapter-util";
+import { ViashTestAdapter } from "./viashTestAdapter";
 
 export async function activate(context: vscode.ExtensionContext) {
   activateViashSchema(context);
+
+  const testExplorerExtension = vscode.extensions.getExtension<TestHub>(testExplorerExtensionId);
+
+  if (testExplorerExtension) {
+    const testHub = testExplorerExtension.exports;
+
+    // Register the Test Adapter
+    context.subscriptions.push(new TestAdapterRegistrar(
+      testHub,
+      workspaceFolder => new ViashTestAdapter(workspaceFolder)
+    ));
+  }
 }
 
 export function deactivate() {}
-
-export async function activateViashSchema(context: vscode.ExtensionContext) {
-  const version = getViashVersion();
-  if (!version) {
-    return;
-  }
-
-  const configSchemaPath = getViashSchemaFile(version, "config");
-  const packageSchemaPath = getViashSchemaFile(version, "package");
-
-  const config = vscode.workspace.getConfiguration("yaml");
-  const schemas = config.get<any>("schemas") || {};
-  const origSchemas = { ...schemas };
-  
-  schemas[configSchemaPath] = ["*.vsh.yaml", "*.vsh.yml"];
-  schemas[packageSchemaPath] = ["_viash.yaml", "_viash.yml"];
-
-  // Don't update if the schemas are the same
-  if (JSON.stringify(schemas) === JSON.stringify(origSchemas)) {
-    return;
-  }
-
-  // Update the schema setting
-  config.update("schemas", schemas, vscode.ConfigurationTarget.Workspace);
-  vscode.window.showInformationMessage(
-    `Viash ${version} detected. Set schema to '${configSchemaPath}'.`
-  );
-}
