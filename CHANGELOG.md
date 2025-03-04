@@ -1,3 +1,9 @@
+# viash-vscode v0.2.0
+
+## NEW FUNCTIONALITY
+
+* Add support for unit testing Viash components (PR #2).
+
 # viash-vscode v0.1.1
 
 Republish of v0.1.0 to fix the version number.
