@@ -20,7 +20,7 @@ Install Viash using [these instructions](https://viash.io/installation).
 
 ## Development
 
-To contribute to the Viash VSCode extension, you need to have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed.
+To contribute to the Viash VSCode extension, you need to have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
 
 To set up the development environment, clone the repository:
 
