@@ -12,7 +12,7 @@
     "nextflow",
     "testing"
   ],
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/viash-io/viash-vscode.git"
@@ -28,7 +28,7 @@
     "Other"
   ],
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.100.0"
   },
   "activationEvents": [
     "workspaceContains:**/*.vsh.{yaml,yml,py,R,r,sh,js,scala,cs}",
@@ -43,16 +43,16 @@
     "publish": "vsce publish"
   },
   "devDependencies": {
-    "@types/node": "~22.13.9",
-    "@types/vscode": "^1.63.0",
-    "@vscode/vsce": "^3.2.2",
-    "typescript": "^5.8.2"
+    "@types/node": "~22.15.29",
+    "@types/vscode": "^1.100.0",
+    "@vscode/vsce": "^3.4.2",
+    "typescript": "^5.8.3"
   },
   "extensionDependencies": [
     "redhat.vscode-yaml"
   ],
   "dependencies": {
-    "vscode-test-adapter-api": "^1.7.0",
-    "vscode-test-adapter-util": "^0.7.0"
+    "vscode-test-adapter-api": "^1.9.0",
+    "vscode-test-adapter-util": "^0.7.1"
   }
 }
