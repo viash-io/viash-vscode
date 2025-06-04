@@ -2,9 +2,9 @@
 
 ## MAJOR CHANGES
 
-* Remove old schema files from vscode config (PR #4).
+* Remove old schema files from vscode config (PR #6).
 
-* Support for multiple Workspace folders and multiple `_viash.yaml` files (PR #4).
+* Support for multiple Workspace folders and multiple `_viash.yaml` files (PR #6).
 
 # viash-vscode v0.2.1
 
