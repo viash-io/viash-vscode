@@ -1,6 +1,6 @@
 # viash-vscode v0.3.0
 
-## MINOR CHANGE
+## MAJOR CHANGES
 
 * Remove old schema files from vscode config (PR #4).
 
