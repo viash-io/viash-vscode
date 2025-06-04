@@ -56,6 +56,7 @@ class ViashTestAdapter {
         if (this.isViashConfigFile(document.uri)) {
           this.load();
         }
+        // todo: handle package files
       })
     );
 
