@@ -12,7 +12,7 @@
     "nextflow",
     "testing"
   ],
-  "version": "0.2.1-rc6",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/viash-io/viash-vscode.git"
@@ -43,7 +43,7 @@
     "publish": "vsce publish"
   },
   "devDependencies": {
-    "@types/node": "~22.13.17",
+    "@types/node": "~22.15.29",
     "@types/vscode": "^1.100.0",
     "@vscode/vsce": "^3.4.2",
     "typescript": "^5.8.3"

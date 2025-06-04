@@ -1,8 +1,16 @@
-# viash-vscode v0.2.1
+# viash-vscode v0.3.0
 
 ## MINOR CHANGE
 
-* Remove old schema files from vscode config (PR #3).
+* Remove old schema files from vscode config (PR #4).
+
+* Support for multiple Workspace folders and multiple `_viash.yaml` files (PR #4).
+
+# viash-vscode v0.2.1
+
+## MINOR CHANGES
+
+* Update dependencies (PR #3).
 
 # viash-vscode v0.2.0
 
