@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
+import { parseYamlWithMerge } from "./yamlWithMerge";
 
 export interface ViashPackage {
   /** Absolute path to the _viash.yaml file */
@@ -31,7 +32,7 @@ export async function findViashPackages(): Promise<ViashPackage[]> {
 
     try {
       const content = fs.readFileSync(configPath, "utf-8");
-      const parsed = parseViashYaml(content);
+      const parsed = parseViashYaml(content, rootDir, rootDir);
 
       packages.push({
         configPath,
@@ -56,17 +57,30 @@ export async function findViashPackages(): Promise<ViashPackage[]> {
  * Simple YAML parser to extract name and viash_version fields.
  * We use a simple regex approach to avoid adding a YAML parsing dependency.
  */
-function parseViashYaml(content: string): {
+function parseViashYaml(content: string, baseDir: string, packageRoot: string): {
   name?: string;
   viashVersion?: string;
 } {
-  const nameMatch = content.match(/^name:\s*(.+)$/m);
-  const versionMatch = content.match(/^viash_version:\s*(.+)$/m);
+  try {
+    const effective: any = parseYamlWithMerge(content, baseDir, packageRoot);
 
-  return {
-    name: nameMatch?.[1]?.trim().replace(/^["']|["']$/g, ""),
-    viashVersion: versionMatch?.[1]?.trim().replace(/^["']|["']$/g, ""),
-  };
+    const rawName = effective?.name;
+    const rawVersion = effective?.viash_version;
+
+    const name = typeof rawName === "string" ? rawName.trim() : undefined;
+    const viashVersion =
+      typeof rawVersion === "string" ? rawVersion.trim() : undefined;
+
+    return { name, viashVersion };
+  } catch (error) {
+    console.error("Failed to parse YAML with merge; falling back to regex:", error);
+    const nameMatch = content.match(/^name:\s*(.+)$/m);
+    const versionMatch = content.match(/^viash_version:\s*(.+)$/m);
+    return {
+      name: nameMatch?.[1]?.trim().replace(/^["']|["']$/g, ""),
+      viashVersion: versionMatch?.[1]?.trim().replace(/^["']|["']$/g, ""),
+    };
+  }
 }
 
 /**
