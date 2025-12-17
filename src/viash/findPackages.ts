@@ -54,8 +54,7 @@ export async function findViashPackages(): Promise<ViashPackage[]> {
 }
 
 /**
- * Simple YAML parser to extract name and viash_version fields.
- * We use a simple regex approach to avoid adding a YAML parsing dependency.
+ * Parse Viash YAML to extract name and viash_version fields.
  */
 function parseViashYaml(content: string, baseDir: string, packageRoot: string): {
   name?: string;
@@ -73,13 +72,9 @@ function parseViashYaml(content: string, baseDir: string, packageRoot: string): 
 
     return { name, viashVersion };
   } catch (error) {
-    console.error("Failed to parse YAML with merge; falling back to regex:", error);
-    const nameMatch = content.match(/^name:\s*(.+)$/m);
-    const versionMatch = content.match(/^viash_version:\s*(.+)$/m);
-    return {
-      name: nameMatch?.[1]?.trim().replace(/^["']|["']$/g, ""),
-      viashVersion: versionMatch?.[1]?.trim().replace(/^["']|["']$/g, ""),
-    };
+    // If parsing fails, return empty - the package will still be added
+    // but without name/version information
+    return {};
   }
 }
 

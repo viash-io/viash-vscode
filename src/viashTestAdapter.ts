@@ -38,9 +38,8 @@ class ViashTestAdapter {
   private log: Log;
 
   constructor(private readonly controller: vscode.TestController) {
-    // Use first workspace folder for logging (Log requires a workspace folder)
-    const firstWorkspace = vscode.workspace.workspaceFolders![0];
-    this.log = new Log("viash", firstWorkspace, "Viash Test Adapter Log");
+    // Log is used for debugging
+    this.log = new Log("viash", undefined, "Viash Test Adapter Log");
 
     // Watch for _viash.yaml and *.vsh.yaml changes
     this.disposables.push(
