@@ -8,6 +8,12 @@
 
 * Automatically update schemas when `_viash.yaml` files are created, modified, or deleted (PR #39).
 
+* YAML parsing of project configs supporting Viash's `__merge__` operator for inheriting from other YAML files (PR #39).
+
+* Added unit tests for YAML merge functionality with comprehensive test coverage (PR #39).
+
+* Added CI workflow for running tests on pull requests (PR #39).
+
 ## MAJOR CHANGES
 
 * `_viash.yaml` and `*.vsh.yaml` files in subdirectories are now properly detected and validated (PR #39).
