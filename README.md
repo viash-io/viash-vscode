@@ -17,3 +17,15 @@ Install the extension from the [Visual Studio Code Marketplace](https://marketpl
 ## Requirements
 
 Install Viash using [these instructions](https://viash.io/installation).
+
+## Contributing
+
+Contributions are welcome! Please see the [Contributing Guidelines](CONTRIBUTING.md) for more information.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a list of changes.
+
+## License
+
+This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details.
