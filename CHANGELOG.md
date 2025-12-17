@@ -1,3 +1,6 @@
+# viash-vscode unreleased
+
+
 # viash-vscode v0.2.2
 
 ## MINOR CHANGES
@@ -7,6 +10,7 @@
 ## DOCUMENTATION
 
 * Add contributing guidelines (PR #36).
+* Fully switch from pnpm back to npm (PR #37).
 
 # viash-vscode v0.2.1
 

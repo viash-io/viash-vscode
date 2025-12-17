@@ -28,7 +28,7 @@
     "Other"
   ],
   "engines": {
-    "vscode": "^1.100.0"
+    "vscode": "^1.107.0"
   },
   "activationEvents": [
     "workspaceContains:**/*.vsh.{yaml,yml,py,R,r,sh,js,scala,cs}",
@@ -36,7 +36,7 @@
   ],
   "main": "./out/extension.js",
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",

@@ -42,11 +42,11 @@ The extension has two main features activated in [src/extension.ts](../src/exten
 ## Development Commands
 
 ```bash
-pnpm install          # Install dependencies
-pnpm run compile      # Build TypeScript to out/
-pnpm run watch        # Watch mode for development
-pnpm run package      # Create .vsix file
-pnpm run publish      # Publish to VS Code Marketplace
+npm install          # Install dependencies
+npm run compile      # Build TypeScript to out/
+npm run watch        # Watch mode for development
+npm run package      # Create .vsix file
+npm run publish      # Publish to VS Code Marketplace
 ```
 
 **Debug**: Press `F5` in VS Code to launch Extension Development Host with the extension loaded.
