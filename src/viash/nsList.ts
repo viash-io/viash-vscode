@@ -1,4 +1,5 @@
 import * as cp from "child_process";
+import * as path from "path";
 
 export type NsListResult = {
   name: string;
@@ -26,13 +27,22 @@ export type NsListResult = {
 };
 
 export type Component = NsListResult & {
+  /** Full component name including package and namespace prefixes */
   fullName: string;
+  /** Absolute path to the component config file */
+  absoluteConfigPath: string;
+  /** Root directory of the Viash package this component belongs to */
+  packageRoot: string;
 };
 
-export async function nsList(cwd: string): Promise<Component[]> {
+/**
+ * Run `viash ns list` from the specified directory (should be a Viash package root).
+ * @param packageRoot - Directory containing _viash.yaml
+ */
+export async function nsList(packageRoot: string): Promise<Component[]> {
   return new Promise<Component[]>((resolve, reject) => {
     const process = cp.spawn("viash", ["ns", "list", "--format", "json"], {
-      cwd: cwd,
+      cwd: packageRoot,
     });
     let stdout = "";
     let stderr = "";
@@ -51,13 +61,16 @@ export async function nsList(cwd: string): Promise<Component[]> {
         let results: Component[] = [];
 
         try {
-          results = JSON.parse(stdout).map((x: NsListResult) => {
+          const parsed = stdout.trim() ? JSON.parse(stdout) : [];
+          results = parsed.map((x: NsListResult) => {
             const packagePrefix = x.package_config?.name
               ? `${x.package_config.name}/`
               : "";
             const namespacePrefix = x.namespace ? `${x.namespace}/` : "";
             const fullName = `${packagePrefix}${namespacePrefix}${x.name}`;
-            return { ...x, fullName };
+            // build_info.config is relative to packageRoot
+            const absoluteConfigPath = path.join(packageRoot, x.build_info.config);
+            return { ...x, fullName, absoluteConfigPath, packageRoot };
           });
         } catch (e) {
           console.error("Error parsing viash ns list output:", e);
