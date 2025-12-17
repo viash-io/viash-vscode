@@ -57,6 +57,8 @@ export async function activateViashSchema(context: vscode.ExtensionContext) {
   context.subscriptions.push(watcher.onDidChange(() => updateSchemas()));
 }
 
+const VIASH_SCHEMA_URL_PREFIX = "https://raw.githubusercontent.com/viash-io/viash-schemas/";
+
 async function updateSchemas(): Promise<void> {
   // Find all Viash packages
   const packages = await findViashPackages();
@@ -64,6 +66,13 @@ async function updateSchemas(): Promise<void> {
   const config = vscode.workspace.getConfiguration("yaml");
   const schemas = config.get<Record<string, string[]>>("schemas") || {};
   const origSchemas = JSON.stringify(schemas);
+
+  // Remove existing Viash schema entries to avoid stale mappings
+  for (const key of Object.keys(schemas)) {
+    if (key.startsWith(VIASH_SCHEMA_URL_PREFIX)) {
+      delete schemas[key];
+    }
+  }
 
   // Build schema mappings scoped to each package
   const configSchemaToGlobs = new Map<string, string[]>();
