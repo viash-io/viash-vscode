@@ -27,9 +27,9 @@ function getPackageGlob(pkg: ViashPackage, pattern: string): string {
   // Find which workspace folder contains this package
   for (const folder of workspaceFolders) {
     const folderPath = folder.uri.fsPath;
-    if (pkg.rootDir.startsWith(folderPath)) {
-      // Get relative path from workspace folder to package root
-      const relativePath = path.relative(folderPath, pkg.rootDir);
+    const relativePath = path.relative(folderPath, pkg.rootDir);
+    // Check if package is within this folder (relative path doesn't start with ..)
+    if (!relativePath.startsWith("..")) {
       if (relativePath === "") {
         // Package is at workspace root
         return pattern;
