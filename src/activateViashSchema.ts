@@ -110,6 +110,21 @@ async function updateSchemas(): Promise<void> {
       const configSchemaPath = getViashSchemaFile(version, "config");
       const packageSchemaPath = getViashSchemaFile(version, "package");
 
+      // Remove existing Viash schema entries to avoid stale mappings
+      for (const key of Object.keys(schemas)) {
+        const globs = schemas[key];
+        const isViashUrl = key.startsWith(VIASH_SCHEMA_URL_PREFIX);
+        const hasViashGlobs = Array.isArray(globs) && globs.some(glob => 
+          glob.includes("*.vsh.yaml") || 
+          glob.includes("*.vsh.yml") || 
+          glob.includes("_viash.yaml") || 
+          glob.includes("_viash.yml")
+        );
+        
+        if (isViashUrl || hasViashGlobs) {
+          delete schemas[key];
+        }
+      }
       if (configSchemaPath) {
         schemas[configSchemaPath] = ["**/*.vsh.yaml", "**/*.vsh.yml"];
       }
