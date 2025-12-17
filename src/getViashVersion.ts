@@ -13,7 +13,7 @@ export function getViashVersion(cwd?: string): string | undefined {
     });
     
     if (result.error) {
-      // viash command not found
+      // viash command not found - silent failure
       return undefined;
     }
     
@@ -25,7 +25,7 @@ export function getViashVersion(cwd?: string): string | undefined {
     const version = result.stdout.toString().trim().split(" ")[1];
     return version || undefined;
   } catch (error) {
-    vscode.window.showErrorMessage(`Error getting Viash version: ${error}`);
+    // Unexpected error - let caller decide whether to show message
     return undefined;
   }
 }
