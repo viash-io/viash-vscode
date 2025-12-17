@@ -61,7 +61,8 @@ export async function nsList(packageRoot: string): Promise<Component[]> {
         let results: Component[] = [];
 
         try {
-          const parsed = stdout.trim() ? JSON.parse(stdout) : [];
+          const safeStdout = stdout ?? "";
+          const parsed = safeStdout.trim() ? JSON.parse(safeStdout) : [];
           results = parsed.map((x: NsListResult) => {
             const packagePrefix = x.package_config?.name
               ? `${x.package_config.name}/`
