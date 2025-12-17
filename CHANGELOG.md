@@ -1,3 +1,7 @@
+# viash-vscode v0.2.2
+
+* Update dependencies (PR #4).
+
 # viash-vscode v0.2.1
 
 ## MINOR CHANGES
