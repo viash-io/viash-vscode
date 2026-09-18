@@ -1,3 +1,15 @@
+# viash-vscode v0.3.1
+
+## MAJOR CHANGES
+
+* Raised the minimum vscode version from 1.107.0 to 1.108.1, keeping `engines.vscode` in step with `@types/vscode`.
+
+## MINOR CHANGES
+
+* Update dependencies, resolving security advisories in `yaml`, `undici`, `lodash`, `qs` and `minimatch`.
+
+* Update `chai` from 5 to 6.
+
 # viash-vscode v0.3.0
 
 ## NEW FUNCTIONALITY
