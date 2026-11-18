@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "CommonJS",
+		"module": "Node16",
 		"target": "ES2024",
 		"outDir": "out",
 		"lib": [
@@ -10,5 +10,14 @@
 		"rootDir": "src",
 		"strict": true,
 		"esModuleInterop": true
+	},
+	"exclude": [
+		"src/**/*.test.ts"
+	],
+	"ts-node": {
+		"compilerOptions": {
+			"module": "CommonJS",
+			"moduleResolution": "node10"
+		}
 	}
 }
