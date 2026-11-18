@@ -35,6 +35,62 @@
     "workspaceContains:**/_viash.{yaml,yml}"
   ],
   "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "viash.vlint.fixAll",
+        "title": "Fix all safe problems",
+        "category": "Viash Lint"
+      },
+      {
+        "command": "viash.vlint.fixAllUnsafe",
+        "title": "Fix all problems, also unsafe",
+        "category": "Viash Lint"
+      },
+      {
+        "command": "viash.vlint.restart",
+        "title": "Restart the language server",
+        "category": "Viash Lint"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "viash.vlint.fixAll",
+          "when": "editorLangId == yaml"
+        },
+        {
+          "command": "viash.vlint.fixAllUnsafe",
+          "when": "editorLangId == yaml"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Viash",
+      "properties": {
+        "viash.vlint.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the Viash Lint language server (`vlint server`) for YAML files."
+        },
+        "viash.vlint.path": {
+          "type": "string",
+          "default": "",
+          "description": "The path to the `vlint` binary. If empty, `vlint` on the `PATH` is used."
+        },
+        "viash.vlint.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Show the LSP messages in the output panel \"Viash Lint\"."
+        }
+      }
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
@@ -58,6 +114,7 @@
     "redhat.vscode-yaml"
   ],
   "dependencies": {
+    "vscode-languageclient": "^11.0.0",
     "vscode-test-adapter-api": "^1.9.0",
     "vscode-test-adapter-util": "^0.7.1",
     "yaml": "^2.5.0"

@@ -1,0 +1,119 @@
+import * as vscode from "vscode";
+import * as cp from "child_process";
+import { LanguageClient } from "vscode-languageclient/node";
+
+const CONFIG_SECTION = "viash.vlint";
+
+let client: LanguageClient | undefined;
+let output: vscode.LogOutputChannel | undefined;
+
+/**
+ * Start the Viash Lint language server (`vlint server`) for YAML files.
+ * The server decides which files are Viash configs or fragments.
+ */
+export async function activateVlint(context: vscode.ExtensionContext) {
+  // vscode-languageclient 11 needs a log output channel
+  output = vscode.window.createOutputChannel("Viash Lint", { log: true });
+  context.subscriptions.push(output);
+
+  // The palette commands run the server commands for the active document.
+  // The client also registers the server commands (`vlint.applyFixes`), but
+  // those get no document from the palette.
+  const fixCommand = (serverCommand: string) => async () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!client || !editor) {
+      return;
+    }
+    await client.sendRequest("workspace/executeCommand", {
+      command: serverCommand,
+      arguments: [{ uri: editor.document.uri.toString() }],
+    });
+  };
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "viash.vlint.fixAll",
+      fixCommand("vlint.applyFixes")
+    ),
+    vscode.commands.registerCommand(
+      "viash.vlint.fixAllUnsafe",
+      fixCommand("vlint.applyUnsafeFixes")
+    ),
+    vscode.commands.registerCommand("viash.vlint.restart", restartClient),
+    vscode.workspace.onDidChangeConfiguration((event) => {
+      if (
+        event.affectsConfiguration(`${CONFIG_SECTION}.enable`) ||
+        event.affectsConfiguration(`${CONFIG_SECTION}.path`)
+      ) {
+        restartClient();
+      }
+    })
+  );
+
+  await startClient();
+}
+
+export async function deactivateVlint() {
+  await stopClient();
+}
+
+async function startClient() {
+  const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
+  if (!config.get<boolean>("enable", true)) {
+    output?.info("Viash Lint is disabled");
+    return;
+  }
+
+  const configuredPath = config.get<string>("path", "");
+  const command = configuredPath || "vlint";
+
+  // Check the binary before starting the client, so that a missing vlint
+  // gives one clear message and not a failing client
+  const check = cp.spawnSync(command, ["--version"]);
+  if (check.error || check.status !== 0) {
+    const message = `Cannot run '${command} --version'. Viash Lint is not started.`;
+    output?.warn(message);
+    if (configuredPath) {
+      // Only show a message if the user set the path. vlint is optional.
+      vscode.window.showWarningMessage(
+        `${message} Check the setting '${CONFIG_SECTION}.path'.`
+      );
+    }
+    return;
+  }
+  output?.info(`Starting ${check.stdout.toString().trim()} (${command} server)`);
+
+  client = new LanguageClient(
+    CONFIG_SECTION,
+    "Viash Lint",
+    { command, args: ["server"] },
+    {
+      documentSelector: [{ scheme: "file", language: "yaml" }],
+      outputChannel: output,
+    }
+  );
+
+  try {
+    await client.start();
+  } catch (error) {
+    output?.error(`Cannot start Viash Lint: ${error}`);
+    client = undefined;
+  }
+}
+
+async function stopClient() {
+  if (!client) {
+    return;
+  }
+  const oldClient = client;
+  client = undefined;
+  try {
+    await oldClient.stop();
+  } catch (error) {
+    output?.error(`Cannot stop Viash Lint: ${error}`);
+  }
+}
+
+async function restartClient() {
+  await stopClient();
+  await startClient();
+}
