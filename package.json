@@ -71,12 +71,12 @@
         "viash.vlint.enable": {
           "type": "boolean",
           "default": true,
-          "description": "Start the Viash Lint language server (`vlint server`) for YAML files."
+          "markdownDescription": "Start the Viash Lint language server (`vlint server`) for YAML files."
         },
         "viash.vlint.path": {
           "type": "string",
           "default": "",
-          "description": "The path to the `vlint` binary. If empty, `vlint` on the `PATH` is used."
+          "markdownDescription": "The path to the `vlint` binary. If empty, `vlint` on the `PATH` is used."
         },
         "viash.vlint.trace.server": {
           "type": "string",
