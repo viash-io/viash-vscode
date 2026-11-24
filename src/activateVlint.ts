@@ -10,6 +10,8 @@ const CONFIG_SECTION = "viash.vlint";
 
 let client: LanguageClient | undefined;
 let output: vscode.LogOutputChannel | undefined;
+let restartPromise: Promise<void> | undefined;
+let restartQueued = false;
 
 /**
  * Start the Viash Lint language server (`vlint server`) for YAML files.
@@ -66,10 +68,13 @@ export async function activateVlint(context: vscode.ExtensionContext) {
     })
   );
 
-  await startClient();
+  // The first start also goes through restartClient, because the
+  // configuration listener above can already request a restart
+  await restartClient();
 }
 
 export async function deactivateVlint() {
+  await restartPromise;
   await stopClient();
 }
 
@@ -141,7 +146,27 @@ async function stopClient() {
   setRunning(false);
 }
 
-async function restartClient() {
-  await stopClient();
-  await startClient();
+/**
+ * Stop the client and start a new one. Only one restart runs at a time.
+ * Requests that come while a restart runs give one more restart after it,
+ * so that two restarts close together cannot leave a client that is never
+ * stopped.
+ */
+async function restartClient(): Promise<void> {
+  if (restartPromise) {
+    restartQueued = true;
+    return restartPromise;
+  }
+  restartPromise = (async () => {
+    try {
+      do {
+        restartQueued = false;
+        await stopClient();
+        await startClient();
+      } while (restartQueued);
+    } finally {
+      restartPromise = undefined;
+    }
+  })();
+  return restartPromise;
 }
