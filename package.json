@@ -57,11 +57,11 @@
       "commandPalette": [
         {
           "command": "viash.vlint.fixAll",
-          "when": "editorLangId == yaml"
+          "when": "editorLangId == yaml && viash.vlint.running"
         },
         {
           "command": "viash.vlint.fixAllUnsafe",
-          "when": "editorLangId == yaml"
+          "when": "editorLangId == yaml && viash.vlint.running"
         }
       ]
     },

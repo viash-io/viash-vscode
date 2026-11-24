@@ -1,6 +1,10 @@
 import * as vscode from "vscode";
 import * as cp from "child_process";
-import { LanguageClient } from "vscode-languageclient/node";
+import {
+  ExecuteCommandRequest,
+  LanguageClient,
+  State,
+} from "vscode-languageclient/node";
 
 const CONFIG_SECTION = "viash.vlint";
 
@@ -21,10 +25,23 @@ export async function activateVlint(context: vscode.ExtensionContext) {
   // those get no document from the palette.
   const fixCommand = (serverCommand: string) => async () => {
     const editor = vscode.window.activeTextEditor;
-    if (!client || !editor) {
+    if (!editor) {
       return;
     }
-    await client.sendRequest("workspace/executeCommand", {
+    // The palette hides these commands when the server is not running, but a
+    // keybinding can still run them
+    if (!client) {
+      const show = "Show output";
+      const choice = await vscode.window.showInformationMessage(
+        "Viash Lint is not running.",
+        show
+      );
+      if (choice === show) {
+        output?.show();
+      }
+      return;
+    }
+    await client.sendRequest(ExecuteCommandRequest.type, {
       command: serverCommand,
       arguments: [{ uri: editor.document.uri.toString() }],
     });
@@ -91,13 +108,23 @@ async function startClient() {
       outputChannel: output,
     }
   );
+  // Also covers a server that crashes or stops after it started
+  client.onDidChangeState((event) =>
+    setRunning(event.newState === State.Running)
+  );
 
   try {
     await client.start();
   } catch (error) {
     output?.error(`Cannot start Viash Lint: ${error}`);
     client = undefined;
+    setRunning(false);
   }
+}
+
+/** Set the context key that shows the fix commands in the palette. */
+function setRunning(running: boolean) {
+  vscode.commands.executeCommand("setContext", "viash.vlint.running", running);
 }
 
 async function stopClient() {
@@ -111,6 +138,7 @@ async function stopClient() {
   } catch (error) {
     output?.error(`Cannot stop Viash Lint: ${error}`);
   }
+  setRunning(false);
 }
 
 async function restartClient() {
