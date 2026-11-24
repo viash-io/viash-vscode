@@ -81,12 +81,15 @@
         "viash.vlint.trace.server": {
           "type": "string",
           "enum": [
-            "off",
             "messages",
             "verbose"
           ],
-          "default": "off",
-          "description": "Show the LSP messages in the output panel \"Viash Lint\"."
+          "default": "messages",
+          "enumDescriptions": [
+            "Log the method name and a short summary of each message.",
+            "Also log the message payloads."
+          ],
+          "markdownDescription": "How much of the LSP traffic to log in the \"Viash Lint\" output channel. Logged only when the log level of that channel is Trace. Set the level with **Developer: Set Log Level...** and choose \"Viash Lint\"."
         }
       }
     }
