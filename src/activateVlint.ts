@@ -85,7 +85,7 @@ async function startClient() {
 
   // Check the binary before starting the client, so that a missing vlint
   // gives one clear message and not a failing client
-  const check = cp.spawnSync(command, ["--version"]);
+  const check = cp.spawnSync(command, ["--version"], { timeout: 5000 });
   if (check.error || check.status !== 0) {
     const message = `Cannot run '${command} --version'. Viash Lint is not started.`;
     output?.warn(message);
