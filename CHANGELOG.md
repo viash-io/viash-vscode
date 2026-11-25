@@ -1,3 +1,14 @@
+# viash-vscode devel
+
+## NEW FUNCTIONALITY
+
+* Start the Viash Lint language server (`vlint server`) for YAML files if `vlint` is installed (PR #51).
+  It shows Viash Lint problems while you type, formats Viash configs, offers quick fixes and shows the rule documentation on hover.
+
+* Add the commands "Viash Lint: Fix all safe problems", "Viash Lint: Fix all problems, also unsafe" and "Viash Lint: Restart the language server" (PR #51).
+
+* Add the settings `viash.vlint.enable`, `viash.vlint.path` and `viash.vlint.trace.server` (PR #51).
+
 # viash-vscode v0.3.0
 
 ## NEW FUNCTIONALITY
