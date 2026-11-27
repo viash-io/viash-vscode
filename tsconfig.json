@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "CommonJS",
+		"module": "Node16",
 		"target": "ES2024",
 		"outDir": "out",
 		"lib": [
@@ -10,5 +10,20 @@
 		"rootDir": "src",
 		"strict": true,
 		"esModuleInterop": true
+	},
+	// "module": "Node16" is needed to import "vscode-languageclient/node".
+	// chai 5 is ESM-only, so the tests do not compile under Node16.
+	// The build excludes the tests, and ts-node (used by mocha) compiles them
+	// with the settings below.
+	// TypeScript 6 deprecates "moduleResolution": "node10". Change this
+	// before upgrading TypeScript past 5.
+	"exclude": [
+		"src/**/*.test.ts"
+	],
+	"ts-node": {
+		"compilerOptions": {
+			"module": "CommonJS",
+			"moduleResolution": "node10"
+		}
 	}
 }
