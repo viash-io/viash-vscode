@@ -32,7 +32,7 @@ export async function activateVlint(context: vscode.ExtensionContext) {
     }
     // The palette hides these commands when the server is not running, but a
     // keybinding can still run them
-    if (!client) {
+    if (!client?.isRunning()) {
       const show = "Show output";
       const choice = await vscode.window.showInformationMessage(
         "Viash Lint is not running.",
